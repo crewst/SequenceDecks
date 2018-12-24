@@ -1,0 +1,26 @@
+﻿<Page
+    x:Class="SequenceDecks.CardViewerWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SequenceDecks"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="Page_Loaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="1531.307" Width="2225.516">
+
+    <Grid x:Name="ViewGrid">
+        <Grid.Background>
+            <ImageBrush ImageSource="Assets/checkerboard.png" Stretch="Fill" />
+        </Grid.Background>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="600" Height="400">
+            <Rectangle RadiusX="40" RadiusY="40">
+                <Rectangle.Fill>
+                    <AcrylicBrush TintColor="#B2000000"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
+                <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="400" Margin="0,0,0,0" Text="undefined" TextWrapping="Wrap"/>
+            </Viewbox>
+        </Grid>
+    </Grid>
+</Page>
