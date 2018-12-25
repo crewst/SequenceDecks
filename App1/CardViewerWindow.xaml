@@ -13,14 +13,12 @@
             <ImageBrush ImageSource="Assets/checkerboard.png" Stretch="Fill" />
         </Grid.Background>
         <Grid x:Name="CardGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Width="600" Height="400">
-            <Rectangle RadiusX="40" RadiusY="40">
-                <Rectangle.Fill>
-                    <AcrylicBrush TintColor="#B2000000"/>
-                </Rectangle.Fill>
-            </Rectangle>
+            <Rectangle RadiusX="40" RadiusY="40" Fill="#99000000"/>
             <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
                 <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="2000" Margin="800,800,800,800" Text="undefined" TextWrapping="Wrap"/>
             </Viewbox>
         </Grid>
     </Grid>
 </Page>
+
+<!-- S. D. G. -->

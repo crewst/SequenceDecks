@@ -109,6 +109,7 @@
     <Compile Include="CardViewerWindow.xaml.vb">
       <DependentUpon>CardViewerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Deck.vb" />
     <Compile Include="MainPage.xaml.vb">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -121,6 +122,17 @@
     <None Include="App1_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\CardViewer_BG\grad00.jpg" />
+    <Content Include="Assets\CardViewer_BG\grad01.jpg" />
+    <Content Include="Assets\CardViewer_BG\grad02.jpg" />
+    <Content Include="Assets\CardViewer_BG\grad03.jpg" />
+    <Content Include="Assets\CardViewer_BG\grad04.jpg" />
+    <Content Include="Assets\CardViewer_BG\grad05.jpg" />
+    <Content Include="Assets\CardViewer_BG\grad06.jpg" />
+    <Content Include="Assets\CardViewer_BG\grad07.jpg" />
+    <Content Include="Assets\CardViewer_BG\grad08.jpg" />
+    <Content Include="Assets\CardViewer_BG\grad09.jpg" />
+    <Content Include="Assets\CardViewer_BG\grad10.jpg" />
     <Content Include="Assets\checkerboard.png" />
     <Content Include="My Project\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -184,6 +196,7 @@
       <Version>6.0.8</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

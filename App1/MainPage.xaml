@@ -20,10 +20,10 @@
             <ImageBrush/>
         </Grid.Background>
         <Grid>
-            <TextBlock HorizontalAlignment="Center" Text="Customize Cards" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="48" Margin="0,18,0,0"/>
-            <Pivot x:Name="builderPivot" HorizontalAlignment="Center" Width="400" Margin="0,180,0,0" Padding="0,-48,0,0">
-                <PivotItem x:Name="numbersPivotItem">
-                    <Grid>
+            <TextBlock HorizontalAlignment="Center" Text="Customize Cards" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="36" Margin="0,18,0,0"/>
+            <Pivot x:Name="builderPivot" HorizontalAlignment="Center" Width="400" Margin="0,140,0,0" Padding="0,-48,0,0">
+                <PivotItem x:Name="numbersPivotItem" Width="400" Margin="0,0,0,0">
+                    <Grid Width="400">
                         <TextBlock Text="Number Range" FontSize="24" TextAlignment="Center" FontFamily="Segoe UI" VerticalAlignment="Top"/>
                         <TextBox Margin="0,40,120,0" Height="24" VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center" Width="50" FontSize="18" PlaceholderText="1"/>
                         <TextBlock Text="to" FontSize="24" TextAlignment="Center" Margin="0,40,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -31,6 +31,14 @@
                         <TextBlock Text="Numbers on Each Card" FontSize="24" TextAlignment="Center" FontFamily="Segoe UI" VerticalAlignment="Top" Margin="0,100,0,0"/>
                         <Slider x:Name="numbersQuantitySlider" Margin="10,140,40,0" Minimum="1" Maximum="5" TickFrequency="1" Value="3" VerticalAlignment="Top" TickPlacement="Outside" ValueChanged="NumbersQuantitySlider_Changed" FontFamily="Segoe UI"/>
                         <TextBlock x:Name="numbersQuantitySliderLabel" Margin="10,140,10,0" Text="3"  VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="24"/>
+                        <TextBlock Text="Number of Blanks Per Card" FontSize="24" TextAlignment="Center" FontFamily="Segoe UI" VerticalAlignment="Top" Margin="0,200,0,0"/>
+                        <Slider x:Name="numbersBlanksQuantitySlider" Margin="10,240,40,0" Minimum="0" Maximum="4" TickFrequency="1" Value="1" TickPlacement="Outside" ValueChanged="numbersBlanksQuantitySlider_Changed" VerticalAlignment="Top"/>
+                        <TextBlock x:Name="numbersBlanksQuantitySliderLabel" Margin="10,240,10,0" Text="1"  VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="24"/>
+                        <TextBlock Text="Position of Blanks" FontSize="24" TextAlignment="Center" FontFamily="Segoe UI" VerticalAlignment="Top" Margin="0,300,0,0"/>
+                        <ToggleButton x:Name="numbersBlanksPositionLeftButton" Content="Left" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,340,0,0" Width="100" Height="40" FontSize="20" IsChecked="False" FontFamily="Segoe UI" Click="numbersBlanksPositionButton_Changed" BorderBrush="#66000000"/>
+                        <ToggleButton x:Name="numbersBlanksPositionMiddleButton" Content="Middle" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,340,0,0" Width="100" Height="40" FontSize="20" IsChecked="True" FontFamily="Segoe UI" Click="numbersBlanksPositionButton_Changed" BorderBrush="#66000000"/>
+                        <ToggleButton x:Name="numbersBlanksPositionRightButton" Content="Right" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,340,0,0" Width="100" Height="40" FontSize="20" IsChecked="False" FontFamily="Segoe UI" Click="numbersBlanksPositionButton_Changed" BorderBrush="#66000000"/>
+                        <ToggleButton x:Name="numbersBlanksPositionRandomButton" Content="Random" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="300,340,0,0" Width="100" Height="40" FontSize="20" IsChecked="False" FontFamily="Segoe UI" Click="numbersBlanksPositionButton_Changed" BorderBrush="#66000000"/>
                     </Grid>
                 </PivotItem>
                 <PivotItem x:Name="lettersPivotItem">
@@ -39,15 +47,15 @@
                     </Grid>
                 </PivotItem>
             </Pivot>
-            <Rectangle Width="300" Height="180" VerticalAlignment="Bottom" Margin="0,0,0,110" RadiusX="20" RadiusY="20">
+            <Rectangle Width="300" Height="180" VerticalAlignment="Bottom" Margin="0,0,0,100" RadiusX="20" RadiusY="20">
                 <Rectangle.Fill>
                     <AcrylicBrush BackgroundSource="HostBackdrop" TintColor="#CC000000" TintOpacity="0.5" FallbackColor="#7F000000"/>
                 </Rectangle.Fill>
             </Rectangle>
-            <TextBlock Text="Preview" FontSize="24" TextAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,256" HorizontalAlignment="Stretch" Foreground="White"/>
-            <ToggleButton x:Name="numbersButton" Content="Numbers" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-200,100,0,0" Width="200" Height="70" FontSize="30" IsChecked="True" FontFamily="Segoe UI" Click="PivotItems_Handler"/>
-            <ToggleButton x:Name="lettersButton" Content="Letters" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="200,100,0,0" Width="200" Height="70" FontSize="30" Click="PivotItems_Handler"/>
-            <Button x:Name="LaunchButton" Content="Launch" FontSize="30" Height="60" Width="800" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
+            <TextBlock Text="Preview" FontSize="24" TextAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,246" HorizontalAlignment="Stretch" Foreground="White"/>
+            <ToggleButton x:Name="numbersButton" Content="Numbers" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-200,80,0,0" Width="200" Height="50" FontSize="24" IsChecked="True" FontFamily="Segoe UI" Click="PivotItems_Handler"/>
+            <ToggleButton x:Name="lettersButton" Content="Letters" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="200,80,0,0" Width="200" Height="50" FontSize="24" Click="PivotItems_Handler"/>
+            <Button x:Name="LaunchButton" Foreground="White" Content="Launch" FontSize="30" Height="60" Width="800" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
                 <Button.Background>
                     <AcrylicBrush BackgroundSource="HostBackdrop" TintColor="#FF297ACC"/>
                 </Button.Background>
@@ -56,3 +64,6 @@
     </Grid>
 
 </Page>
+
+<!-- S. D. G. -->
+    
