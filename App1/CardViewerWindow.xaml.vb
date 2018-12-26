@@ -22,13 +22,12 @@ Public NotInheritable Class CardViewerWindow
         Dim display_scale = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel
         Dim display_width = DisplayInformation.GetForCurrentView().ScreenWidthInRawPixels / display_scale
         Dim display_height = DisplayInformation.GetForCurrentView().ScreenHeightInRawPixels / display_scale
+        Debug.WriteLine("INFO: Display resolution is " & display_width & "x" & display_height & " @" & display_scale & "x.")
 
         Dim random_selector = New Random()
 
         ' Randomly selects an index from BG_ARRAY.
         Dim background_wildcard = random_selector.Next(BG_ARRAY.Length)
-
-        Debug.WriteLine(background_wildcard)
 
         Me.InitializeComponent()
         ApplicationView.GetForCurrentView().TryEnterFullScreenMode()

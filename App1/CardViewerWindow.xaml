@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="Page_Loaded"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="1531.307" Width="2225.516">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid x:Name="ViewGrid">
         <Grid.Background>
@@ -15,7 +15,7 @@
         <Grid x:Name="CardGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Width="600" Height="400">
             <Rectangle RadiusX="40" RadiusY="40" Fill="#99000000"/>
             <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="2000" Margin="800,800,800,800" Text="undefined" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="2000" Margin="800,0,800,0" Text="undefined" TextWrapping="Wrap"/>
             </Viewbox>
         </Grid>
     </Grid>
