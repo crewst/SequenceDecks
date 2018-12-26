@@ -14,10 +14,11 @@ Public NotInheritable Class MainPage
     ' GLOBAL VARIABLES
     Public mainTitleBar = Core.CoreApplication.GetCurrentView().TitleBar
     Public mainTitleBarProperties = ApplicationView.GetForCurrentView().TitleBar
-    Public previewDeck = New Deck
     Public realDeck = New Deck
 
-    Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
+    Private IsLoaded = False
+
+    Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs) Handles LaunchButton.Loaded
         ' EVENT:Loaded -- Initial page setup upon load completion.
 
         Me.InitializeComponent()
@@ -28,6 +29,75 @@ Public NotInheritable Class MainPage
         ' Setup window for acrylic effects.
         mainTitleBar.ExtendViewIntoTitleBar = True
         mainTitleBarProperties.ButtonBackgroundColor = Windows.UI.Colors.Transparent
+
+        IsLoaded = True
+
+        LoadPreview()
+    End Sub
+
+    Private Sub LoadPreview()
+        ' Builds or rebuilds the preview card UI.
+
+        Dim previewDeck = New Deck
+
+        Try
+            ' Make sure range boxes aren't empty.
+            With numbersRangeMinTextBox
+                If .Text = "" Then
+                    .Text = .PlaceholderText
+                End If
+            End With
+            With numbersRangeMaxTextBox
+                If .Text = "" Then
+                    .Text = .PlaceholderText
+                End If
+            End With
+            With lettersRangeMinTextBox
+                If .Text = "" Then
+                    .Text = .PlaceholderText
+                End If
+            End With
+            With lettersRangeMaxTextBox
+                If .Text = "" Then
+                    .Text = .PlaceholderText
+                End If
+            End With
+
+            With previewDeck
+                If numbersButton.IsChecked Then
+                    .DeckType = numbersButton.Content
+                    ' Next, we must convert the input ranges to integers so that they can be used as indices in the Deck class's For loops.
+                    Debug.WriteLine("DEBUG: numbersRangeMinTextBox.Text is " & numbersRangeMinTextBox.Text)
+                    .DeckRange = {Convert.ToInt32(numbersRangeMinTextBox.Text), Convert.ToInt32(numbersRangeMaxTextBox.Text)}
+                    .DeckCardSize = numbersQuantitySlider.Value
+                    .DeckBlankCount = numbersBlanksQuantitySlider.Value
+                    ' Next up is a messy determination of which toggle button was selected. I'll need to clean this up eventually.
+                    If numbersBlanksPositionLeftButton.IsChecked Then
+                        .DeckBlankPos = numbersBlanksPositionLeftButton.Content
+                    ElseIf numbersBlanksPositionMiddleButton.IsChecked Then
+                        .DeckBlankPos = numbersBlanksPositionMiddleButton.Content
+                    ElseIf numbersBlanksPositionRightButton.IsChecked Then
+                        .DeckBlankPos = numbersBlanksPositionRightButton.Content
+                    ElseIf numbersBlanksPositionRandomButton.IsChecked Then
+                        .DeckBlankPos = numbersBlanksPositionRandomButton.Content
+                    End If
+                    If ShuffleCheckbox.IsChecked Then
+                        .DeckShuffle = True
+                    Else
+                        .DeckShuffle = False
+                    End If
+                ElseIf lettersButton.IsChecked Then
+                    .DeckType = lettersButton.Content
+                End If
+
+                .BuildDeck()
+            End With
+            PreviewTextBlock.Text = previewDeck.GetFirstCard()
+        Catch ex As NullReferenceException
+            Debug.WriteLine("WARNING: " & ex.ToString())
+        End Try
+
+
     End Sub
 
     Private Sub PivotItems_Handler(sender As Object, args As RoutedEventArgs)
@@ -45,6 +115,8 @@ Public NotInheritable Class MainPage
             numbersButton.IsChecked = False
             builderPivot.SelectedIndex = 1
         End If
+
+        LoadPreview()
     End Sub
 
 #Region "Numbers Handlers"
@@ -54,17 +126,23 @@ Public NotInheritable Class MainPage
 
         ' Since this Sub is called on every .Value change, I think it's called at the initialization as well.
         ' This leads to a null reference. The debug console shows that this seems to only happen once, so it should be safe to ignore it with a Try.
-        Try
-            numbersQuantitySliderLabel.Text = numbersQuantitySlider.Value.ToString()
-            numbersBlanksQuantitySlider.Maximum = numbersQuantitySlider.Value - 1
-            If numbersQuantitySlider.Value = 1 Then
-                numbersBlanksQuantitySlider.IsEnabled = False
-            Else
-                numbersBlanksQuantitySlider.IsEnabled = True
-            End If
-        Catch ex As NullReferenceException
-            Debug.WriteLine("WARNING: " & ex.ToString())
-        End Try
+
+        If IsLoaded Then
+            Try
+                numbersQuantitySliderLabel.Text = numbersQuantitySlider.Value.ToString()
+                numbersBlanksQuantitySlider.Maximum = numbersQuantitySlider.Value - 1
+                If numbersQuantitySlider.Value = 1 Then
+                    numbersBlanksQuantitySlider.IsEnabled = False
+                Else
+                    numbersBlanksQuantitySlider.IsEnabled = True
+                End If
+            Catch ex As NullReferenceException
+                Debug.WriteLine("WARNING: " & ex.ToString())
+            End Try
+
+            LoadPreview()
+        End If
+
 
     End Sub
 
@@ -73,11 +151,16 @@ Public NotInheritable Class MainPage
 
         ' Since this Sub is called on every .Value change, I think it's called at the initialization as well.
         ' This leads to a null reference. The debug console shows that this seems to only happen once, so it should be safe to ignore it with a Try.
-        Try
-            numbersBlanksQuantitySliderLabel.Text = numbersBlanksQuantitySlider.Value.ToString()
-        Catch ex As NullReferenceException
-            Debug.WriteLine("WARNING: " & ex.ToString())
-        End Try
+        If IsLoaded Then
+            Try
+                numbersBlanksQuantitySliderLabel.Text = numbersBlanksQuantitySlider.Value.ToString()
+            Catch ex As NullReferenceException
+                Debug.WriteLine("WARNING: " & ex.ToString())
+            End Try
+
+            LoadPreview()
+        End If
+
     End Sub
 
     Private Sub NumbersBlanksPositionButton_Changed(sender As Object, e As RoutedEventArgs)
@@ -108,6 +191,8 @@ Public NotInheritable Class MainPage
             numbersBlanksPositionRightButton.IsChecked = False
             numbersBlanksPositionRandomButton.IsChecked = True
         End If
+
+        LoadPreview()
     End Sub
 
 #End Region
@@ -119,17 +204,21 @@ Public NotInheritable Class MainPage
 
         ' Since this Sub is called on every .Value change, I think it's called at the initialization as well.
         ' This leads to a null reference. The debug console shows that this seems to only happen once, so it should be safe to ignore it with a Try.
-        Try
-            lettersQuantitySliderLabel.Text = lettersQuantitySlider.Value.ToString()
-            lettersBlanksQuantitySlider.Maximum = lettersQuantitySlider.Value - 1
-            If lettersQuantitySlider.Value = 1 Then
-                lettersBlanksQuantitySlider.IsEnabled = False
-            Else
-                lettersBlanksQuantitySlider.IsEnabled = True
-            End If
-        Catch ex As NullReferenceException
-            Debug.WriteLine("WARNING: " & ex.ToString())
-        End Try
+        If IsLoaded Then
+            Try
+                lettersQuantitySliderLabel.Text = lettersQuantitySlider.Value.ToString()
+                lettersBlanksQuantitySlider.Maximum = lettersQuantitySlider.Value - 1
+                If lettersQuantitySlider.Value = 1 Then
+                    lettersBlanksQuantitySlider.IsEnabled = False
+                Else
+                    lettersBlanksQuantitySlider.IsEnabled = True
+                End If
+            Catch ex As NullReferenceException
+                Debug.WriteLine("WARNING: " & ex.ToString())
+            End Try
+
+            LoadPreview()
+        End If
 
     End Sub
 
@@ -138,11 +227,15 @@ Public NotInheritable Class MainPage
 
         ' Since this Sub is called on every .Value change, I think it's called at the initialization as well.
         ' This leads to a null reference. The debug console shows that this seems to only happen once, so it should be safe to ignore it with a Try.
-        Try
-            lettersBlanksQuantitySliderLabel.Text = lettersBlanksQuantitySlider.Value.ToString()
-        Catch ex As NullReferenceException
-            Debug.WriteLine("WARNING: " & ex.ToString())
-        End Try
+        If IsLoaded Then
+            Try
+                lettersBlanksQuantitySliderLabel.Text = lettersBlanksQuantitySlider.Value.ToString()
+            Catch ex As NullReferenceException
+                Debug.WriteLine("WARNING: " & ex.ToString())
+            End Try
+            LoadPreview()
+        End If
+
     End Sub
 
     Private Sub LettersBlanksPositionButton_Changed(sender As Object, e As RoutedEventArgs)
@@ -173,6 +266,7 @@ Public NotInheritable Class MainPage
             lettersBlanksPositionRightButton.IsChecked = False
             lettersBlanksPositionRandomButton.IsChecked = True
         End If
+        LoadPreview()
     End Sub
 
 #End Region
@@ -181,14 +275,15 @@ Public NotInheritable Class MainPage
         ' Handles LaunchButton click event.
 
         ' Make sure range boxes aren't empty.
+        Dim RangeMinInt, RangeMaxInt As Integer
         With numbersRangeMinTextBox
             If .Text = "" Then
-                .Text = .PlaceholderText
+                RangeMinInt = .PlaceholderText
             End If
         End With
         With numbersRangeMaxTextBox
             If .Text = "" Then
-                .Text = .PlaceholderText
+                RangeMaxInt = .PlaceholderText
             End If
         End With
         With lettersRangeMinTextBox
@@ -204,7 +299,7 @@ Public NotInheritable Class MainPage
 
         With realDeck
             If numbersButton.IsChecked Then
-                realDeck.DeckType = numbersButton.Content
+                .DeckType = numbersButton.Content
                 ' Next, we must convert the input ranges to integers so that they can be used as indices in the Deck class's For loops.
                 Debug.WriteLine("DEBUG: numbersRangeMinTextBox.Text is " & numbersRangeMinTextBox.Text)
                 .DeckRange = {Convert.ToInt32(numbersRangeMinTextBox.Text), Convert.ToInt32(numbersRangeMaxTextBox.Text)}
@@ -232,7 +327,7 @@ Public NotInheritable Class MainPage
             .BuildDeck()
         End With
 
-        Me.Frame.Navigate(GetType(CardViewerWindow))
+        Frame.Navigate(GetType(CardViewerWindow), realDeck)
     End Sub
 End Class
 

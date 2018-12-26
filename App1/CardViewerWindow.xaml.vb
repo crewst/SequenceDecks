@@ -14,6 +14,13 @@ Public NotInheritable Class CardViewerWindow
     ' CONSTANTS
     Const CARD_SCALE = 0.4  ' Used to set CardGrid's size relative to the display bounds.
     Private BG_ARRAY() As String = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10"}
+    Private InstanceDeck As Deck
+
+    Protected Overrides Sub OnNavigatedTo(e As NavigationEventArgs)
+        MyBase.OnNavigatedTo(e)
+        Dim parameters = CType(e.Parameter, Deck)
+        InstanceDeck = parameters
+    End Sub
 
     Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
         ' EVENT:Loaded -- Initial page setup upon load completion.
@@ -50,9 +57,23 @@ Public NotInheritable Class CardViewerWindow
         ' Set ViewGrid background image based on selected index from background_wildcard.
         ViewGrid.Background = New ImageBrush With {
         .ImageSource = New BitmapImage(New Uri(Me.BaseUri, "Assets/CardViewer_BG/grad" & BG_ARRAY(background_wildcard) & ".jpg")),
-        .Stretch = Stretch.Fill
-    }
+        .Stretch = Stretch.Fill}
 
+        CardTextBlock.Text = InstanceDeck.GetFirstCard()
+
+    End Sub
+
+    Private Sub ExitViewButton_Clicked(sender As Object, e As RoutedEventArgs) Handles ExitViewButton.Click
+        ApplicationView.GetForCurrentView.ExitFullScreenMode()
+        Frame.Navigate(GetType(MainPage))
+    End Sub
+
+    Private Sub NavigationLeftButton_Clicked(sender As Object, e As RoutedEventArgs) Handles NavigationPreviousButton.Click
+        CardTextBlock.Text = InstanceDeck.GetPreviousCard()
+    End Sub
+
+    Private Sub NavigationRightButton_Clicked(sender As Object, e As RoutedEventArgs) Handles NavigationNextButton.Click
+        CardTextBlock.Text = InstanceDeck.GetNextCard()
     End Sub
 End Class
 

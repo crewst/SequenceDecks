@@ -5,7 +5,7 @@
     xmlns:local="using:SequenceDecks"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Loaded="Page_Loaded">
+    mc:Ignorable="d">
     <Page.Background>
         <AcrylicBrush BackgroundSource="HostBackdrop" TintOpacity="0.7"/>
     </Page.Background>
@@ -61,12 +61,13 @@
                     </Grid>
                 </PivotItem>
             </Pivot>
-            <Rectangle Width="300" Height="180" VerticalAlignment="Bottom" Margin="0,0,0,100" RadiusX="20" RadiusY="20">
-                <Rectangle.Fill>
-                    <AcrylicBrush BackgroundSource="HostBackdrop" TintColor="#CC000000" TintOpacity="0.5" FallbackColor="#7F000000"/>
-                </Rectangle.Fill>
-            </Rectangle>
+            <Rectangle Width="300" Height="180" VerticalAlignment="Bottom" Margin="0,0,0,100" RadiusX="20" RadiusY="20" Fill="#99000000"/>
             <TextBlock Text="Preview" FontSize="24" TextAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,246" HorizontalAlignment="Stretch" Foreground="White"/>
+            <Grid Width="300" Height="170" VerticalAlignment="Bottom" Margin="0,0,0,100">
+                <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
+                    <TextBlock x:Name="PreviewTextBlock" Text="undefined" FontSize="1000" TextAlignment="Center" Foreground="White" Margin="200,0,200,0"/>
+                </Viewbox>
+            </Grid>
             <ToggleButton x:Name="numbersButton" Content="Numbers" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-200,80,0,0" Width="200" Height="50" FontSize="24" IsChecked="True" FontFamily="Segoe UI" Click="PivotItems_Handler"/>
             <ToggleButton x:Name="lettersButton" Content="Letters" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="200,80,0,0" Width="200" Height="50" FontSize="24" Click="PivotItems_Handler"/>
             <CheckBox x:Name="ShuffleCheckbox" Content="Shuffle Cards" HorizontalAlignment="Center" Margin="-200,0,0,28" VerticalAlignment="Bottom" FontSize="24" Padding="8,0,0,0" />

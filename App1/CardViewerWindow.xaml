@@ -15,9 +15,12 @@
         <Grid x:Name="CardGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Width="600" Height="400">
             <Rectangle RadiusX="40" RadiusY="40" Fill="#99000000"/>
             <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="2000" Margin="800,0,800,0" Text="undefined" TextWrapping="Wrap"/>
+                <TextBlock x:Name="CardTextBlock" Foreground="White" HorizontalAlignment="Center" FontSize="2000" Margin="800,0,800,0" Text="undefined" TextWrapping="Wrap"/>
             </Viewbox>
         </Grid>
+        <Button x:Name="ExitViewButton" Content="Exit" Foreground="White" Margin="0,0,0,100" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="100" Background="#B2000000"/>
+        <Button x:Name="NavigationPreviousButton" Content="" Foreground="White" FontFamily="Webdings" FontSize="200" HorizontalAlignment="Left" Margin="100,0,0,0" VerticalAlignment="Center" Background="#B2000000"/>
+        <Button x:Name="NavigationNextButton" Content="" Foreground="White" FontFamily="Webdings" FontSize="200" HorizontalAlignment="Right" Margin="0,0,100,0" VerticalAlignment="Center" Background="#B2000000"/>
     </Grid>
 </Page>
 
