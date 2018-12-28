@@ -286,7 +286,7 @@ Public NotInheritable Class MainPage
                 End If
             ElseIf lettersButton.IsChecked Then
                 .DeckType = lettersButton.Content
-                .DeckRange = { .ReverseLetterMap(RangeMinChar.ToUpper), .ReverseLetterMap(RangeMaxChar.ToUpper)}
+                .DeckRange = { .EncodingLetterMap(RangeMinChar.ToUpper), .EncodingLetterMap(RangeMaxChar.ToUpper)}
                 .DeckCardSize = lettersQuantitySlider.Value
                 .DeckBlankCount = lettersBlanksQuantitySlider.Value
                 If lettersBlanksPositionLeftButton.IsChecked Then
