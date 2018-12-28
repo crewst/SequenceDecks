@@ -35,68 +35,17 @@ Public NotInheritable Class MainPage
         LoadPreview()
     End Sub
 
-    Private Sub LoadPreview()
+    Private Sub LoadPreview() Handles ShuffleCheckbox.Checked, ShuffleCheckbox.Unchecked
         ' Builds or rebuilds the preview card UI.
 
         Dim previewDeck = New Deck
 
         Try
-            ' Make sure range boxes aren't empty.
-            With numbersRangeMinTextBox
-                If .Text = "" Then
-                    .Text = .PlaceholderText
-                End If
-            End With
-            With numbersRangeMaxTextBox
-                If .Text = "" Then
-                    .Text = .PlaceholderText
-                End If
-            End With
-            With lettersRangeMinTextBox
-                If .Text = "" Then
-                    .Text = .PlaceholderText
-                End If
-            End With
-            With lettersRangeMaxTextBox
-                If .Text = "" Then
-                    .Text = .PlaceholderText
-                End If
-            End With
-
-            With previewDeck
-                If numbersButton.IsChecked Then
-                    .DeckType = numbersButton.Content
-                    ' Next, we must convert the input ranges to integers so that they can be used as indices in the Deck class's For loops.
-                    Debug.WriteLine("DEBUG: numbersRangeMinTextBox.Text is " & numbersRangeMinTextBox.Text)
-                    .DeckRange = {Convert.ToInt32(numbersRangeMinTextBox.Text), Convert.ToInt32(numbersRangeMaxTextBox.Text)}
-                    .DeckCardSize = numbersQuantitySlider.Value
-                    .DeckBlankCount = numbersBlanksQuantitySlider.Value
-                    ' Next up is a messy determination of which toggle button was selected. I'll need to clean this up eventually.
-                    If numbersBlanksPositionLeftButton.IsChecked Then
-                        .DeckBlankPos = numbersBlanksPositionLeftButton.Content
-                    ElseIf numbersBlanksPositionMiddleButton.IsChecked Then
-                        .DeckBlankPos = numbersBlanksPositionMiddleButton.Content
-                    ElseIf numbersBlanksPositionRightButton.IsChecked Then
-                        .DeckBlankPos = numbersBlanksPositionRightButton.Content
-                    ElseIf numbersBlanksPositionRandomButton.IsChecked Then
-                        .DeckBlankPos = numbersBlanksPositionRandomButton.Content
-                    End If
-                    If ShuffleCheckbox.IsChecked Then
-                        .DeckShuffle = True
-                    Else
-                        .DeckShuffle = False
-                    End If
-                ElseIf lettersButton.IsChecked Then
-                    .DeckType = lettersButton.Content
-                End If
-
-                .BuildDeck()
-            End With
+            RebuildDeck(previewDeck)
             PreviewTextBlock.Text = previewDeck.GetFirstCard()
-        Catch ex As NullReferenceException
-            Debug.WriteLine("WARNING: " & ex.ToString())
+        Catch ex As Exception
+            PreviewTextBlock.Text = "Unavailable"
         End Try
-
 
     End Sub
 
@@ -274,35 +223,55 @@ Public NotInheritable Class MainPage
     Private Sub LaunchButtonClicked(sender As Object, e As RoutedEventArgs) Handles LaunchButton.Click
         ' Handles LaunchButton click event.
 
+        Try
+            RebuildDeck(realDeck)
+            Frame.Navigate(GetType(CardViewerWindow), realDeck)
+        Catch ex As Exception
+            ShowDialog("Unacceptable Input", "There was an error building the deck. Check the Range values and try again." &
+                       vbCrLf & vbCrLf & "The error was: " & ex.Message.ToString())
+        End Try
+    End Sub
+
+    Private Function RebuildDeck(ByRef GivenDeck As Deck)
+        ' Consolidation for the procedures used to build a deck. This lets us build both previewDeck and realDeck with the same code.
+
         ' Make sure range boxes aren't empty.
         Dim RangeMinInt, RangeMaxInt As Integer
+        Dim RangeMinChar, RangeMaxChar As String
         With numbersRangeMinTextBox
             If .Text = "" Then
-                RangeMinInt = .PlaceholderText
+                RangeMinInt = Convert.ToInt32(.PlaceholderText)
+            Else
+                RangeMinInt = Convert.ToInt32(.Text)
             End If
         End With
         With numbersRangeMaxTextBox
             If .Text = "" Then
-                RangeMaxInt = .PlaceholderText
+                RangeMaxInt = Convert.ToInt32(.PlaceholderText)
+            Else
+                RangeMaxInt = Convert.ToInt32(.Text)
             End If
         End With
         With lettersRangeMinTextBox
             If .Text = "" Then
-                .Text = .PlaceholderText
+                RangeMinChar = .PlaceholderText
+            Else
+                RangeMinChar = .Text.ToUpper()
             End If
         End With
         With lettersRangeMaxTextBox
             If .Text = "" Then
-                .Text = .PlaceholderText
+                RangeMaxChar = .PlaceholderText
+            Else
+                RangeMaxChar = .Text.ToUpper()
             End If
         End With
 
-        With realDeck
+        With GivenDeck
             If numbersButton.IsChecked Then
                 .DeckType = numbersButton.Content
                 ' Next, we must convert the input ranges to integers so that they can be used as indices in the Deck class's For loops.
-                Debug.WriteLine("DEBUG: numbersRangeMinTextBox.Text is " & numbersRangeMinTextBox.Text)
-                .DeckRange = {Convert.ToInt32(numbersRangeMinTextBox.Text), Convert.ToInt32(numbersRangeMaxTextBox.Text)}
+                .DeckRange = {RangeMinInt, RangeMaxInt}
                 .DeckCardSize = numbersQuantitySlider.Value
                 .DeckBlankCount = numbersBlanksQuantitySlider.Value
                 ' Next up is a messy determination of which toggle button was selected. I'll need to clean this up eventually.
@@ -315,20 +284,50 @@ Public NotInheritable Class MainPage
                 ElseIf numbersBlanksPositionRandomButton.IsChecked Then
                     .DeckBlankPos = numbersBlanksPositionRandomButton.Content
                 End If
-                If ShuffleCheckbox.IsChecked Then
-                    .DeckShuffle = True
-                Else
-                    .DeckShuffle = False
-                End If
             ElseIf lettersButton.IsChecked Then
                 .DeckType = lettersButton.Content
+                .DeckRange = { .ReverseLetterMap(RangeMinChar.ToUpper), .ReverseLetterMap(RangeMaxChar.ToUpper)}
+                .DeckCardSize = lettersQuantitySlider.Value
+                .DeckBlankCount = lettersBlanksQuantitySlider.Value
+                If lettersBlanksPositionLeftButton.IsChecked Then
+                    .DeckBlankPos = lettersBlanksPositionLeftButton.Content
+                ElseIf lettersBlanksPositionMiddleButton.IsChecked Then
+                    .DeckBlankPos = lettersBlanksPositionMiddleButton.Content
+                ElseIf lettersBlanksPositionRightButton.IsChecked Then
+                    .DeckBlankPos = lettersBlanksPositionRightButton.Content
+                ElseIf lettersBlanksPositionRandomButton.IsChecked Then
+                    .DeckBlankPos = lettersBlanksPositionRandomButton.Content
+                End If
+            End If
+
+            If ShuffleCheckbox.IsChecked Then
+                .DeckShuffle = True
+            Else
+                .DeckShuffle = False
             End If
 
             .BuildDeck()
+
+            .GetFirstCard()
+            .GetNextCard()
+            .GetPreviousCard()
+
         End With
 
-        Frame.Navigate(GetType(CardViewerWindow), realDeck)
+        Return GivenDeck
+    End Function
+
+    Private Async Sub ShowDialog(Title As String, Content As String)
+        ' Handles all simple popup dialogs.
+
+        Dim InstanceDialog As ContentDialog = New ContentDialog With {
+        .Title = Title,
+        .Content = Content,
+        .CloseButtonText = "OK"
+        }
+
+        Await InstanceDialog.ShowAsync()
+
     End Sub
 End Class
-
 ' S. D. G.

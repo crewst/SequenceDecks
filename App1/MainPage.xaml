@@ -71,11 +71,7 @@
             <ToggleButton x:Name="numbersButton" Content="Numbers" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-200,80,0,0" Width="200" Height="50" FontSize="24" IsChecked="True" FontFamily="Segoe UI" Click="PivotItems_Handler"/>
             <ToggleButton x:Name="lettersButton" Content="Letters" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="200,80,0,0" Width="200" Height="50" FontSize="24" Click="PivotItems_Handler"/>
             <CheckBox x:Name="ShuffleCheckbox" Content="Shuffle Cards" HorizontalAlignment="Center" Margin="-200,0,0,28" VerticalAlignment="Bottom" FontSize="24" Padding="8,0,0,0" />
-            <Button x:Name="LaunchButton" Foreground="White" Content="Launch" FontSize="30" Height="60" Width="187" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="200,0,0,16">
-                <Button.Background>
-                    <AcrylicBrush BackgroundSource="HostBackdrop" TintColor="#FF297ACC"/>
-                </Button.Background>
-            </Button>
+            <Button x:Name="LaunchButton" Foreground="White" Content="Launch" FontSize="30" Height="60" Width="187" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="200,0,0,16" Background="{ThemeResource SystemControlBackgroundAccentBrush}"/>
         </Grid>
     </Grid>
 

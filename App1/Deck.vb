@@ -13,6 +13,8 @@ Public Class Deck
     Private DeckStringArray As String()
     Private CurrentDeckStringArrayIndex As Integer = 0
     Private random_selector = New Random()
+    Public LetterMap As New Specialized.OrderedDictionary
+    Public ReverseLetterMap As New Specialized.OrderedDictionary
 
     ' Auto properties for construction.
     Public Property DeckType As String
@@ -25,6 +27,60 @@ Public Class Deck
     Public Sub New()
         ' Primary class constructor.
 
+        ' Build LetterMap Dictionary.
+        LetterMap.Add(0, "A")
+        LetterMap.Add(1, "B")
+        LetterMap.Add(2, "C")
+        LetterMap.Add(3, "D")
+        LetterMap.Add(4, "E")
+        LetterMap.Add(5, "F")
+        LetterMap.Add(6, "G")
+        LetterMap.Add(7, "H")
+        LetterMap.Add(8, "I")
+        LetterMap.Add(9, "J")
+        LetterMap.Add(10, "K")
+        LetterMap.Add(11, "L")
+        LetterMap.Add(12, "M")
+        LetterMap.Add(13, "N")
+        LetterMap.Add(14, "O")
+        LetterMap.Add(15, "P")
+        LetterMap.Add(16, "Q")
+        LetterMap.Add(17, "R")
+        LetterMap.Add(18, "S")
+        LetterMap.Add(19, "T")
+        LetterMap.Add(20, "U")
+        LetterMap.Add(21, "V")
+        LetterMap.Add(22, "W")
+        LetterMap.Add(23, "X")
+        LetterMap.Add(24, "Y")
+        LetterMap.Add(25, "Z")
+
+        ReverseLetterMap.Add("A", 0)
+        ReverseLetterMap.Add("B", 1)
+        ReverseLetterMap.Add("C", 2)
+        ReverseLetterMap.Add("D", 3)
+        ReverseLetterMap.Add("E", 4)
+        ReverseLetterMap.Add("F", 5)
+        ReverseLetterMap.Add("G", 6)
+        ReverseLetterMap.Add("H", 7)
+        ReverseLetterMap.Add("I", 8)
+        ReverseLetterMap.Add("J", 9)
+        ReverseLetterMap.Add("K", 10)
+        ReverseLetterMap.Add("L", 11)
+        ReverseLetterMap.Add("M", 12)
+        ReverseLetterMap.Add("N", 13)
+        ReverseLetterMap.Add("O", 14)
+        ReverseLetterMap.Add("P", 15)
+        ReverseLetterMap.Add("Q", 16)
+        ReverseLetterMap.Add("R", 17)
+        ReverseLetterMap.Add("S", 18)
+        ReverseLetterMap.Add("T", 19)
+        ReverseLetterMap.Add("U", 20)
+        ReverseLetterMap.Add("V", 21)
+        ReverseLetterMap.Add("W", 22)
+        ReverseLetterMap.Add("X", 23)
+        ReverseLetterMap.Add("Y", 24)
+        ReverseLetterMap.Add("Z", 25)
     End Sub
 
     Public Sub BuildDeck()
@@ -32,39 +88,44 @@ Public Class Deck
 
         Debug.WriteLine("INFO: Deck construction initialized.")
 
-        If DeckType = "Numbers" Then
-            ' Begin construction of a numbers deck.
 
-            Debug.WriteLine("INFO: Deck type is Numbers.")
-            Debug.WriteLine("INFO: Deck range is " & DeckRange(0).ToString() & " to " & DeckRange(1))
 
-            Dim numberRangeArray(DeckRange(1) - DeckRange(0))
-            Dim currentNumberRangeArrayIndex As Integer = 0
+        Debug.WriteLine("INFO: Deck type is Numbers.")
+        Debug.WriteLine("INFO: Deck range is " & DeckRange(0).ToString() & " to " & DeckRange(1))
 
-            For currentNumber As Integer = DeckRange(0) To DeckRange(1)
-                numberRangeArray(currentNumberRangeArrayIndex) = currentNumber.ToString()
-                currentNumberRangeArrayIndex += 1
-            Next
+        Dim numberRangeArray(DeckRange(1) - DeckRange(0))
+        Dim currentNumberRangeArrayIndex As Integer = 0
 
-            Debug.WriteLine("INFO: Deck range: " & String.Join(", ", numberRangeArray))
+        For currentNumber As Integer = DeckRange(0) To DeckRange(1)
+            numberRangeArray(currentNumberRangeArrayIndex) = currentNumber.ToString()
+            currentNumberRangeArrayIndex += 1
+        Next
 
-            ReDim DeckStringArray(numberRangeArray.Length - DeckCardSize)
+        Debug.WriteLine("INFO: Deck range: " & String.Join(", ", numberRangeArray))
 
-            For assemblyRangeArrayIndex As Integer = 0 To (numberRangeArray.Length - DeckCardSize)
-                Dim assemblyStringArray(DeckCardSize - 1)
-                Dim innerAssemblyIndexTicker = assemblyRangeArrayIndex
+        ReDim DeckStringArray(numberRangeArray.Length - DeckCardSize)
+
+        ' Begin construction of a numbers deck.
+
+        For assemblyRangeArrayIndex As Integer = 0 To (numberRangeArray.Length - DeckCardSize)
+            Dim assemblyStringArray(DeckCardSize - 1)
+            Dim innerAssemblyIndexTicker = assemblyRangeArrayIndex
+            If DeckType = "Numbers" Then
                 For innerAssimblyStringArrayIndex As Integer = 0 To DeckCardSize - 1
                     assemblyStringArray(innerAssimblyStringArrayIndex) = numberRangeArray(innerAssemblyIndexTicker)
                     innerAssemblyIndexTicker += 1
                 Next
-                DeckStringArray(assemblyRangeArrayIndex) = String.Join(", ", assemblyStringArray)
-            Next
+            ElseIf DeckType = "Letters" Then
+                For innerAssimblyStringArrayIndex As Integer = 0 To DeckCardSize - 1
+                    assemblyStringArray(innerAssimblyStringArrayIndex) = LetterMap(Convert.ToInt32(numberRangeArray(innerAssemblyIndexTicker)))
+                    innerAssemblyIndexTicker += 1
+                Next
+            End If
+        DeckStringArray(assemblyRangeArrayIndex) = String.Join(", ", assemblyStringArray)
+        Next
 
-        ElseIf DeckType = "Letters" Then
+        ' Code for Letters will be inserted here.
 
-            ' Code for Letters will be inserted here.
-
-        End If
 
         Debug.WriteLine("INFO: Raw assembled deck array: " & String.Join(" | ", DeckStringArray))
 
